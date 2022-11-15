@@ -4,11 +4,11 @@ function IncomePage() {
   return (
     <PageContainer>
       <Header>Nova entrada</Header>
-      <LoginForm>
+      <IncomeForm>
         <Input placeholder="Valor"></Input>
         <Input placeholder="Descrição"></Input>
         <Button>Salvar entrada</Button>
-      </LoginForm>
+      </IncomeForm>
     </PageContainer>
   );
 }
@@ -32,7 +32,7 @@ const Header = styled.h1`
   margin-top: 25px;
 `;
 
-const LoginForm = styled.form`
+const IncomeForm = styled.form`
   width: 326px;
   margin-top: 40px;
 `;
