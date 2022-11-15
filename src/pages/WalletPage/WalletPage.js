@@ -1,22 +1,30 @@
 import styled from "styled-components";
+import { RiLogoutBoxRLine } from "react-icons/ri";
+import { FiPlusCircle, FiMinusCircle } from "react-icons/fi";
 
 function WalletPage() {
   return (
     <PageContainer>
       <Header>
         <p>Olá, Usuário</p>
-        <LogOut>X</LogOut>
+        <LogOut>
+          <RiLogoutBoxRLine />
+        </LogOut>
       </Header>
       <Dashboard>
         <p>Não há registros de entrada ou saída</p>
       </Dashboard>
       <Options>
         <Button>
-          <Icon>X</Icon>
+          <Icon>
+            <FiPlusCircle />
+          </Icon>
           <p>Nova entrada</p>
         </Button>
         <Button>
-          <Icon>X</Icon>
+          <Icon>
+            <FiMinusCircle />
+          </Icon>
           <p>Nova saída</p>
         </Button>
       </Options>
@@ -45,8 +53,8 @@ const Header = styled.h1`
   }
 `;
 
-const LogOut = styled.p`
-  font-size: 26px;
+const LogOut = styled.span`
+  font-size: 24px;
   color: #ffffff;
   cursor: pointer;
 `;
@@ -99,7 +107,7 @@ const Button = styled.button`
   }
 `;
 
-const Icon = styled.p`
+const Icon = styled.span`
   font-size: 25px;
   color: #ffffff;
   margin: 10px;
