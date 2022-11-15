@@ -1,12 +1,26 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
 import GlobalStyle from "./assets/GlobalStyle";
+import ExpensePage from "./pages/ExpensePage/ExpensePage";
+import IncomePage from "./pages/IncomePage/IncomePage";
+import LoginPage from "./pages/LoginPage/LoginPage";
+import SignUpPage from "./pages/SignUpPage/SignUpPage";
+import WalletPage from "./pages/WalletPage/WalletPage";
 
 function App() {
   return (
-    <div>
+    <BrowserRouter>
       <GlobalStyle />
-      <ScreenContainer></ScreenContainer>
-    </div>
+      <ScreenContainer>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
+          <Route path="/wallet" element={<WalletPage />} />
+          <Route path="/income" element={<IncomePage />} />
+          <Route path="/expense" element={<ExpensePage />} />
+        </Routes>
+      </ScreenContainer>
+    </BrowserRouter>
   );
 }
 
