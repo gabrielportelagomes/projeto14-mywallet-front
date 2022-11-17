@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-/* import URL from "../../constants/url"; */
+import URL from "../../constants/url";
 
 function SignUpPage() {
   const navigate = useNavigate();
