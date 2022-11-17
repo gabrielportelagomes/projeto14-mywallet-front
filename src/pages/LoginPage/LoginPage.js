@@ -1,15 +1,78 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useAuth } from "../../provider/auth";
+import URL from "../../constants/url";
 
 function LoginPage() {
+  const navigate = useNavigate();
+  const { userLogin, setUserLogin } = useAuth();
+  const [disabledButton, setDisabledButton] = useState(false);
+  const [loginForm, setLoginForm] = useState({ email: "", password: "" });
+
+  useEffect(() => {
+    if (userLogin !== undefined) {
+      navigate("/wallet");
+    }
+  }, [userLogin]);
+
+  function handleForm(event) {
+    const { name, value } = event.target;
+    setLoginForm({ ...loginForm, [name]: value });
+  }
+
+  function login(event) {
+    event.preventDefault();
+    setDisabledButton(true);
+
+    const body = loginForm;
+
+    axios
+      .post(`${URL}/sign-in`, body)
+      .then((response) => {
+        setUserLogin(response.data);
+        navigate("/wallet");
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+        setDisabledButton(false);
+      });
+  }
+
   return (
     <PageContainer>
       <Logo>MyWallet</Logo>
-      <LoginForm>
-        <Input placeholder="E-mail"></Input>
-        <Input placeholder="Senha"></Input>
-        <Button>Entrar</Button>
+      <LoginForm onSubmit={login}>
+        <Input
+          name="email"
+          value={loginForm.email}
+          onChange={handleForm}
+          type="email"
+          placeholder="E-mail"
+          disabled={disabledButton}
+          required
+        ></Input>
+        <Input
+          name="password"
+          value={loginForm.password}
+          onChange={handleForm}
+          type="password"
+          placeholder="Senha"
+          disabled={disabledButton}
+          required
+        ></Input>
+        <Button type="submit" disabled={disabledButton}>
+          Entrar
+        </Button>
       </LoginForm>
-      <SignUp>Primeira vez? Cadastre-se</SignUp>
+      {disabledButton ? (
+        <SignUp>Primeira vez? Cadastre-se!</SignUp>
+      ) : (
+        <Link to="/sign-up">
+          <SignUp>Primeira vez? Cadastre-se!</SignUp>
+        </Link>
+      )}
     </PageContainer>
   );
 }
@@ -63,7 +126,7 @@ const Button = styled.button`
   font-weight: 700;
   font-size: 20px;
   color: #ffffff;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? "cursor" : "pointer")};
 `;
 
 const SignUp = styled.p`
@@ -72,5 +135,4 @@ const SignUp = styled.p`
   font-size: 18px;
   color: #ffffff;
   margin-top: 36px;
-  cursor: pointer;
 `;
