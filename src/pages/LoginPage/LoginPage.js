@@ -32,6 +32,7 @@ function LoginPage() {
       .post(`${URL}/sign-in`, body)
       .then((response) => {
         setUserLogin(response.data);
+        localStorage.setItem("userMyWallet", JSON.stringify(response.data));
         navigate("/wallet");
       })
       .catch((error) => {
