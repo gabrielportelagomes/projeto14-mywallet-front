@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { FiPlusCircle, FiMinusCircle } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 function WalletPage() {
   return (
@@ -15,18 +16,22 @@ function WalletPage() {
         <p>Não há registros de entrada ou saída</p>
       </Dashboard>
       <Options>
-        <Button>
-          <Icon>
-            <FiPlusCircle />
-          </Icon>
-          <p>Nova entrada</p>
-        </Button>
-        <Button>
-          <Icon>
-            <FiMinusCircle />
-          </Icon>
-          <p>Nova saída</p>
-        </Button>
+        <Link to="/income">
+          <Button>
+            <Icon>
+              <FiPlusCircle />
+            </Icon>
+            <p>Nova entrada</p>
+          </Button>
+        </Link>
+        <Link to="/expense">
+          <Button>
+            <Icon>
+              <FiMinusCircle />
+            </Icon>
+            <p>Nova saída</p>
+          </Button>
+        </Link>
       </Options>
     </PageContainer>
   );
