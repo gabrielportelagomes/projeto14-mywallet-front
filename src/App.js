@@ -6,20 +6,23 @@ import IncomePage from "./pages/IncomePage/IncomePage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import WalletPage from "./pages/WalletPage/WalletPage";
+import { AuthProvider } from "./provider/auth";
 
 function App() {
   return (
     <BrowserRouter>
-      <GlobalStyle />
-      <ScreenContainer>
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/sign-up" element={<SignUpPage />} />
-          <Route path="/wallet" element={<WalletPage />} />
-          <Route path="/income" element={<IncomePage />} />
-          <Route path="/expense" element={<ExpensePage />} />
-        </Routes>
-      </ScreenContainer>
+      <AuthProvider>
+        <GlobalStyle />
+        <ScreenContainer>
+          <Routes>
+            <Route path="/" element={<LoginPage />} />
+            <Route path="/sign-up" element={<SignUpPage />} />
+            <Route path="/wallet" element={<WalletPage />} />
+            <Route path="/income" element={<IncomePage />} />
+            <Route path="/expense" element={<ExpensePage />} />
+          </Routes>
+        </ScreenContainer>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
