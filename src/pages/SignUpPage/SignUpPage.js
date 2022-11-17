@@ -1,17 +1,97 @@
+import axios from "axios";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+/* import URL from "../../constants/url"; */
 
 function SignUpPage() {
+  const navigate = useNavigate();
+  const [disabledButton, setDisabledButton] = useState(false);
+  const [signUpForm, setSignUpForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  function handleForm(event) {
+    const { name, value } = event.target;
+    setSignUpForm({ ...signUpForm, [name]: value });
+  }
+
+  function signUp(event) {
+    event.preventDefault();
+    setDisabledButton(true);
+
+    if (signUpForm.password === signUpForm.confirmPassword) {
+      const body = {
+        name: signUpForm.name,
+        email: signUpForm.email,
+        password: signUpForm.password,
+      };
+      axios
+        .post(`${URL}/sign-up`, body)
+        .then(() => navigate("/"))
+        .catch((error) => {
+          alert(error.response.data.message);
+        });
+    } else {
+      alert("As senhas não conferem");
+      setDisabledButton(false);
+    }
+  }
+
   return (
     <PageContainer>
       <Logo>MyWallet</Logo>
-      <SignUpForm>
-        <Input placeholder="Nome"></Input>
-        <Input placeholder="E-mail"></Input>
-        <Input placeholder="Senha"></Input>
-        <Input placeholder="Confirme a senha"></Input>
-        <Button>Cadastrar</Button>
+      <SignUpForm onSubmit={signUp}>
+        <Input
+          name="name"
+          value={signUpForm.name}
+          onChange={handleForm}
+          type="text"
+          placeholder="Nome"
+          disabled={disabledButton}
+          required
+        ></Input>
+        <Input
+          name="email"
+          value={signUpForm.email}
+          onChange={handleForm}
+          type="email"
+          placeholder="E-mail"
+          disabled={disabledButton}
+          required
+        ></Input>
+        <Input
+          name="password"
+          value={signUpForm.password}
+          onChange={handleForm}
+          type="password"
+          placeholder="Senha"
+          disabled={disabledButton}
+          required
+        ></Input>
+        <Input
+          name="confirmPassword"
+          value={signUpForm.confirmPassword}
+          onChange={handleForm}
+          type="password"
+          placeholder="Confirme a senha"
+          disabled={disabledButton}
+          required
+        ></Input>
+        <Button type="submit" disabled={disabledButton}>
+          Cadastrar
+        </Button>
       </SignUpForm>
-      <Login>Já tem uma conta? Entre agora!</Login>
+      {disabledButton ? (
+        <Login>Já tem uma conta? Entre agora!</Login>
+      ) : (
+        <Link to="/">
+          <Login>Já tem uma conta? Entre agora!</Login>
+        </Link>
+      )}
     </PageContainer>
   );
 }
@@ -65,7 +145,7 @@ const Button = styled.button`
   font-weight: 700;
   font-size: 20px;
   color: #ffffff;
-  cursor: pointer;
+  cursor:  ${(props) => (props.disabled ? "cursor" : "pointer")};;
 `;
 
 const Login = styled.p`
@@ -74,5 +154,4 @@ const Login = styled.p`
   font-size: 18px;
   color: #ffffff;
   margin-top: 36px;
-  cursor: pointer;
 `;
