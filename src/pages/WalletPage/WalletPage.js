@@ -8,7 +8,7 @@ import URL from "../../constants/url";
 
 function WalletPage() {
   const navigate = useNavigate();
-  const { userLogin } = useAuth();
+  const { userLogin, setUserLogin } = useAuth();
 
   function signOut() {
     axios
@@ -19,6 +19,7 @@ function WalletPage() {
       })
       .then(() => {
         localStorage.removeItem("userMyWallet");
+        setUserLogin(undefined);
         navigate("/");
       })
       .catch((error) => {
