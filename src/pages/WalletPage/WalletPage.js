@@ -1,16 +1,38 @@
 import styled from "styled-components";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { FiPlusCircle, FiMinusCircle } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useAuth } from "../../provider/auth";
+import URL from "../../constants/url";
 
 function WalletPage() {
+  const navigate = useNavigate();
+  const { userLogin } = useAuth();
+
+  function signOut() {
+    axios
+      .delete(`${URL}/sign-out`, {
+        headers: {
+          Authorization: `Bearer ${userLogin.token}`,
+        },
+      })
+      .then(() => {
+        localStorage.removeItem("userMyWallet");
+        navigate("/");
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+  }
+
   return (
     <PageContainer>
       <Header>
         <p>Olá, Usuário</p>
-        <LogOut>
+        <SignOut onClick={signOut}>
           <RiLogoutBoxRLine />
-        </LogOut>
+        </SignOut>
       </Header>
       <Dashboard>
         <p>Não há registros de entrada ou saída</p>
@@ -58,7 +80,7 @@ const Header = styled.h1`
   }
 `;
 
-const LogOut = styled.span`
+const SignOut = styled.span`
   font-size: 24px;
   color: #ffffff;
   cursor: pointer;
