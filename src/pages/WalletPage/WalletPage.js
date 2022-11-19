@@ -5,10 +5,27 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../provider/auth";
 import URL from "../../constants/url";
+import { useEffect, useState } from "react";
 
 function WalletPage() {
   const navigate = useNavigate();
   const { userLogin, setUserLogin } = useAuth();
+  const [records, setRecords] = useState([]);
+
+  useEffect(() => {
+    if (userLogin !== undefined) {
+      axios
+        .get(`${URL}/record`, {
+          headers: {
+            Authorization: `Bearer ${userLogin.token}`,
+          },
+        })
+        .then((response) => {
+          setRecords(response.data);
+        })
+        .catch((error) => console.log(error.response.data.message));
+    }
+  }, [userLogin]);
 
   function signOut() {
     axios
@@ -25,6 +42,10 @@ function WalletPage() {
       .catch((error) => {
         alert(error.response.data.message);
       });
+  }
+
+  if(userLogin === undefined || records === undefined) {
+    return <p>Carregando...</p>
   }
 
   return (
