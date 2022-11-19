@@ -1,13 +1,73 @@
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import URL from "../../constants/url";
+import { useAuth } from "../../provider/auth";
 
 function IncomePage() {
+  const navigate = useNavigate();
+  const { userLogin } = useAuth();
+  const [incomeForm, setIncomeForm] = useState({
+    value: "",
+    description: "",
+    category: "income",
+  });
+
+  function handleForm(event) {
+    const { name, value } = event.target;
+    setIncomeForm({ ...incomeForm, [name]: value });
+  }
+
+  function convertValue(event) {
+    let newValue = event.target.value;
+    newValue = newValue.replace(/\D/g, "");
+    newValue = newValue.replace(/(\d)(\d{2})$/, "$1,$2");
+    newValue = newValue.replace(/(?=(\d{3})+(\D))\B/g, ".");
+    event.target.value = newValue;
+    return event;
+  }
+
+  function recordIncome(event) {
+    event.preventDefault();
+    const body = {
+      ...incomeForm,
+      value: parseInt(incomeForm.value.replace(/[^\d]+/g, "")),
+    };
+
+    axios
+      .post(`${URL}/record`, body, {
+        headers: {
+          Authorization: `Bearer ${userLogin.token}`,
+        },
+      })
+      .then(() => navigate("/wallet"))
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+  }
+
   return (
     <PageContainer>
       <Header>Nova entrada</Header>
-      <IncomeForm>
-        <Input placeholder="Valor"></Input>
-        <Input placeholder="Descrição"></Input>
-        <Button>Salvar entrada</Button>
+      <IncomeForm onSubmit={recordIncome}>
+        <Input
+          name="value"
+          value={incomeForm.value}
+          onChange={(e) => handleForm(convertValue(e))}
+          type="string"
+          placeholder="Valor"
+          required
+        ></Input>
+        <Input
+          name="description"
+          value={incomeForm.description}
+          onChange={handleForm}
+          type="string"
+          placeholder="Descrição"
+          required
+        ></Input>
+        <Button type="submit">Salvar entrada</Button>
       </IncomeForm>
     </PageContainer>
   );
