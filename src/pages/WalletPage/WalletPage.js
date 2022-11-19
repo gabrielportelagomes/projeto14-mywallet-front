@@ -6,11 +6,14 @@ import axios from "axios";
 import { useAuth } from "../../provider/auth";
 import URL from "../../constants/url";
 import { useEffect, useState } from "react";
+import Record from "../../components/Record";
 
 function WalletPage() {
   const navigate = useNavigate();
   const { userLogin, setUserLogin } = useAuth();
   const [records, setRecords] = useState([]);
+  const [balance, setBalance] = useState("");
+  const [balanceColor, setBalanceColor] = useState("#000000");
 
   useEffect(() => {
     if (userLogin !== undefined) {
@@ -22,10 +25,37 @@ function WalletPage() {
         })
         .then((response) => {
           setRecords(response.data);
+          calculateBalance(response.data);
         })
         .catch((error) => console.log(error.response.data.message));
     }
   }, [userLogin]);
+
+  function calculateBalance(allRecords) {
+    let newBalance = 0;
+    allRecords.forEach((record) => {
+      if (record.category === "income") {
+        newBalance += record.value;
+      } else {
+        newBalance -= record.value;
+      }
+    });
+
+    if (newBalance > 0) {
+      setBalanceColor("#03ac00");
+    } else if (newBalance < 0) {
+      setBalanceColor("#c70000");
+    } else {
+      setBalanceColor("#000000");
+    }
+
+    setBalance(
+      new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      }).format(newBalance / 100)
+    );
+  }
 
   function signOut() {
     axios
@@ -44,8 +74,8 @@ function WalletPage() {
       });
   }
 
-  if(userLogin === undefined || records === undefined) {
-    return <p>Carregando...</p>
+  if (userLogin === undefined || records === undefined) {
+    return <p>Carregando...</p>;
   }
 
   return (
@@ -56,9 +86,24 @@ function WalletPage() {
           <RiLogoutBoxRLine />
         </SignOut>
       </Header>
-      <Dashboard>
-        <p>Não há registros de entrada ou saída</p>
-      </Dashboard>
+      {records.length === 0 ? (
+        <EmptyDashboard>
+          <p>Não há registros de entrada ou saída</p>
+        </EmptyDashboard>
+      ) : (
+        <Dashboard>
+          <Records>
+            {records.map((record, id) => (
+              <Record key={id} record={record} />
+            ))}
+          </Records>
+          <Balance color={balanceColor}>
+            <p>SALDO</p>
+            <span>{balance}</span>
+          </Balance>
+        </Dashboard>
+      )}
+
       <Options>
         <Link to="/income">
           <Button>
@@ -108,7 +153,7 @@ const SignOut = styled.span`
   cursor: pointer;
 `;
 
-const Dashboard = styled.div`
+const EmptyDashboard = styled.div`
   width: 326px;
   height: 446px;
   display: flex;
@@ -124,6 +169,48 @@ const Dashboard = styled.div`
     font-weight: 400;
     font-size: 20px;
     color: #868686;
+  }
+`;
+
+const Dashboard = styled.div`
+  width: 326px;
+  height: 446px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 5px;
+  background-color: #ffffff;
+  margin-top: 26px;
+  position: relative;
+`;
+
+const Records = styled.div`
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  margin: 23px 0 23px 0;
+`;
+
+const Balance = styled.div`
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 10px;
+  p {
+    text-align: center;
+    font-family: "Raleway", sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    color: #000000;
+  }
+  span {
+    text-align: center;
+    font-family: "Raleway", sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    color: ${(props) => props.color};
   }
 `;
 
