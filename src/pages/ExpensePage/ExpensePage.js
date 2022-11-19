@@ -1,13 +1,72 @@
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import URL from "../../constants/url";
+import { useAuth } from "../../provider/auth";
 
 function ExpensePage() {
+  const navigate = useNavigate();
+  const { userLogin } = useAuth();
+  const [expenseForm, setExpenseForm] = useState({
+    value: "",
+    description: "",
+    category: "expense",
+  });
+
+  function handleForm(event) {
+    const { name, value } = event.target;
+    setExpenseForm({ ...expenseForm, [name]: value });
+  }
+
+  function convertValue(event) {
+    let newValue = event.target.value;
+    newValue = newValue.replace(/\D/g, "");
+    newValue = newValue.replace(/(\d)(\d{2})$/, "$1,$2");
+    newValue = newValue.replace(/(?=(\d{3})+(\D))\B/g, ".");
+    event.target.value = newValue;
+    return event;
+  }
+
+  function recordExpense(event) {
+    event.preventDefault();
+    const body = {
+      ...expenseForm,
+      value: parseInt(expenseForm.value.replace(/[^\d]+/g, "")),
+    };
+
+    axios
+      .post(`${URL}/record`, body, {
+        headers: {
+          Authorization: `Bearer ${userLogin.token}`,
+        },
+      })
+      .then(() => navigate("/wallet"))
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+  }
   return (
     <PageContainer>
       <Header>Nova saída</Header>
-      <ExpenseForm>
-        <Input placeholder="Valor"></Input>
-        <Input placeholder="Descrição"></Input>
-        <Button>Salvar saída</Button>
+      <ExpenseForm onSubmit={recordExpense}>
+        <Input
+          name="value"
+          value={expenseForm.value}
+          onChange={(e) => handleForm(convertValue(e))}
+          type="string"
+          placeholder="Valor"
+          required
+        ></Input>
+        <Input
+          name="description"
+          value={expenseForm.description}
+          onChange={handleForm}
+          type="string"
+          placeholder="Descrição"
+          required
+        ></Input>
+        <Button type="submit">Salvar saída</Button>
       </ExpenseForm>
     </PageContainer>
   );
