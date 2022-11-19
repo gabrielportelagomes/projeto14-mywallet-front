@@ -53,7 +53,7 @@ function WalletPage() {
       new Intl.NumberFormat("pt-BR", {
         style: "currency",
         currency: "BRL",
-      }).format(newBalance / 100)
+      }).format(Math.abs(newBalance) / 100)
     );
   }
 
@@ -188,7 +188,11 @@ const Records = styled.div`
   width: 90%;
   display: flex;
   flex-direction: column;
-  margin: 23px 0 23px 0;
+  margin: 23px 0 40px 0;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const Balance = styled.div`
