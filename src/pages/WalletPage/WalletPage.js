@@ -52,9 +52,9 @@ function WalletPage() {
     let newBalance = 0;
     allRecords.forEach((record) => {
       if (record.category === "income") {
-        newBalance += record.value;
+        newBalance += parseInt(record.value);
       } else {
-        newBalance -= record.value;
+        newBalance -= parseInt(record.value);
       }
     });
 
