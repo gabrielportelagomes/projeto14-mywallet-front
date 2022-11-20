@@ -36,7 +36,7 @@ function IncomePage() {
     };
 
     axios
-      .post(`${URL}/record`, body, {
+      .post(`${URL}/records`, body, {
         headers: {
           Authorization: `Bearer ${userLogin.token}`,
         },

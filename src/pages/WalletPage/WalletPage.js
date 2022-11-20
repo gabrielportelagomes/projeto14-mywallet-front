@@ -34,7 +34,7 @@ function WalletPage() {
   useEffect(() => {
     if (userLogin !== undefined) {
       axios
-        .get(`${URL}/record`, {
+        .get(`${URL}/records`, {
           headers: {
             Authorization: `Bearer ${userLogin.token}`,
           },
