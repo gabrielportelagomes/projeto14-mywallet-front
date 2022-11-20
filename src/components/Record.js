@@ -43,11 +43,13 @@ function Record({ record, update, setUpdate }) {
     setEditRecord({
       value: record.value,
       description: record.description,
-      category: "income",
+      category: record.category,
       _id: record._id,
     });
     if (category === "income") {
       navigate("/edit-income");
+    } else if (category === "expense") {
+      navigate("/edit-expense");
     }
   }
 
