@@ -11,9 +11,25 @@ import Record from "../../components/Record";
 function WalletPage() {
   const navigate = useNavigate();
   const { userLogin, setUserLogin } = useAuth();
+  const [user, setUser] = useState(undefined);
   const [records, setRecords] = useState([]);
   const [balance, setBalance] = useState("");
   const [balanceColor, setBalanceColor] = useState("#000000");
+
+  useEffect(() => {
+    if (userLogin !== undefined) {
+      axios
+        .get(`${URL}/user`, {
+          headers: {
+            Authorization: `Bearer ${userLogin.token}`,
+          },
+        })
+        .then((response) => {
+          setUser(response.data);
+        })
+        .catch((error) => console.log(error.response.data.message));
+    }
+  }, [userLogin]);
 
   useEffect(() => {
     if (userLogin !== undefined) {
@@ -74,14 +90,14 @@ function WalletPage() {
       });
   }
 
-  if (userLogin === undefined || records === undefined) {
+  if (userLogin === undefined || records === undefined || user === undefined) {
     return <p>Carregando...</p>;
   }
 
   return (
     <PageContainer>
       <Header>
-        <p>Olá, Usuário</p>
+        <p>Olá, {user.name.split(" ")[0]}</p>
         <SignOut onClick={signOut}>
           <RiLogoutBoxRLine />
         </SignOut>
