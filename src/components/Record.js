@@ -2,9 +2,13 @@ import axios from "axios";
 import styled from "styled-components";
 import { useAuth } from "../provider/auth";
 import URL from "../constants/url";
+import { useRecord } from "../provider/record";
+import { useNavigate } from "react-router-dom";
 
 function Record({ record, update, setUpdate }) {
+  const navigate = useNavigate();
   const { userLogin } = useAuth();
+  const { setEditRecord } = useRecord();
   const { description, category } = record;
   const id = record._id;
   const date = record.date.split("/")[0] + "/" + record.date.split("/")[1];
@@ -35,10 +39,22 @@ function Record({ record, update, setUpdate }) {
     }
   }
 
+  function editRecord() {
+    setEditRecord({
+      value: record.value,
+      description: record.description,
+      category: "income",
+      _id: record._id,
+    });
+    if (category === "income") {
+      navigate("/edit-income");
+    }
+  }
+
   return (
     <RecordContainer>
       <Date>{date}</Date>
-      <Description>{description}</Description>
+      <Description onClick={editRecord}>{description}</Description>
       <Value color={colorCategory(category)}>{value}</Value>
       <Delete onClick={() => deleteRecord(id)}>x</Delete>
     </RecordContainer>
@@ -68,6 +84,7 @@ const Description = styled.p`
   width: 160px;
   text-align: left;
   color: #000000;
+  cursor: pointer;
 `;
 
 const Value = styled.p`

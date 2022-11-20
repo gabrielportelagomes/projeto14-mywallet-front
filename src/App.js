@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
 import GlobalStyle from "./assets/GlobalStyle";
+import EditIncome from "./pages/EditIncome/EditIncome";
 import ExpensePage from "./pages/ExpensePage/ExpensePage";
 import IncomePage from "./pages/IncomePage/IncomePage";
 import LoginPage from "./pages/LoginPage/LoginPage";
@@ -22,6 +23,7 @@ function App() {
               <Route path="/wallet" element={<WalletPage />} />
               <Route path="/income" element={<IncomePage />} />
               <Route path="/expense" element={<ExpensePage />} />
+              <Route path="/edit-income" element={<EditIncome />} />
             </Routes>
           </ScreenContainer>
         </RecordProvider>
