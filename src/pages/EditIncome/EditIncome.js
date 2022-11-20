@@ -35,7 +35,7 @@ function EditIncome() {
     return event;
   }
 
-  function recordIncome(event) {
+  function updateIncome(event) {
     event.preventDefault();
     const body = {
       ...editIncomeForm,
@@ -57,7 +57,7 @@ function EditIncome() {
   return (
     <PageContainer>
       <Header>Editar entrada</Header>
-      <IncomeForm onSubmit={recordIncome}>
+      <IncomeForm onSubmit={updateIncome}>
         <Input
           name="value"
           value={editIncomeForm.value}
