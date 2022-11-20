@@ -12,4 +12,4 @@ export const RecordProvider = (props) => {
   );
 };
 
-export const useAuth = () => useContext(RecordContext);
+export const useRecord = () => useContext(RecordContext);
