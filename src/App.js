@@ -7,21 +7,24 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import WalletPage from "./pages/WalletPage/WalletPage";
 import { AuthProvider } from "./provider/auth";
+import { RecordProvider } from "./provider/record";
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <GlobalStyle />
-        <ScreenContainer>
-          <Routes>
-            <Route path="/" element={<LoginPage />} />
-            <Route path="/sign-up" element={<SignUpPage />} />
-            <Route path="/wallet" element={<WalletPage />} />
-            <Route path="/income" element={<IncomePage />} />
-            <Route path="/expense" element={<ExpensePage />} />
-          </Routes>
-        </ScreenContainer>
+        <RecordProvider>
+          <GlobalStyle />
+          <ScreenContainer>
+            <Routes>
+              <Route path="/" element={<LoginPage />} />
+              <Route path="/sign-up" element={<SignUpPage />} />
+              <Route path="/wallet" element={<WalletPage />} />
+              <Route path="/income" element={<IncomePage />} />
+              <Route path="/expense" element={<ExpensePage />} />
+            </Routes>
+          </ScreenContainer>
+        </RecordProvider>
       </AuthProvider>
     </BrowserRouter>
   );
