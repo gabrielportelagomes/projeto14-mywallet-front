@@ -1,7 +1,12 @@
+import axios from "axios";
 import styled from "styled-components";
+import { useAuth } from "../provider/auth";
+import URL from "../constants/url";
 
-function Record({ record }) {
+function Record({ record, update, setUpdate }) {
+  const { userLogin } = useAuth();
   const { description, category } = record;
+  const id = record._id;
   const date = record.date.split("/")[0] + "/" + record.date.split("/")[1];
   const value = new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -16,11 +21,26 @@ function Record({ record }) {
     }
   }
 
+  function deleteRecord(id) {
+    const confirm = window.confirm("Dejesa excluir esse registro?");
+    if (confirm) {
+      axios
+        .delete(`${URL}/records/${id}`, {
+          headers: {
+            Authorization: `Bearer ${userLogin.token}`,
+          },
+        })
+        .then(() => setUpdate(!update))
+        .catch((error) => console.log(error.response.data.message));
+    }
+  }
+
   return (
     <RecordContainer>
       <Date>{date}</Date>
       <Description>{description}</Description>
       <Value color={colorCategory(category)}>{value}</Value>
+      <Delete onClick={() => deleteRecord(id)}>x</Delete>
     </RecordContainer>
   );
 }
@@ -53,4 +73,10 @@ const Description = styled.p`
 const Value = styled.p`
   margin-left: 5px;
   color: ${(props) => props.color};
+`;
+
+const Delete = styled.p`
+  margin-left: 10px;
+  color: #c6c6c6;
+  cursor: pointer;
 `;

@@ -15,6 +15,7 @@ function WalletPage() {
   const [records, setRecords] = useState([]);
   const [balance, setBalance] = useState("");
   const [balanceColor, setBalanceColor] = useState("#000000");
+  const [update, setUpdate] = useState(false);
 
   useEffect(() => {
     if (userLogin !== undefined) {
@@ -45,7 +46,7 @@ function WalletPage() {
         })
         .catch((error) => console.log(error.response.data.message));
     }
-  }, [userLogin]);
+  }, [userLogin, update]);
 
   function calculateBalance(allRecords) {
     let newBalance = 0;
@@ -110,7 +111,12 @@ function WalletPage() {
         <Dashboard>
           <Records>
             {records.map((record, id) => (
-              <Record key={id} record={record} />
+              <Record
+                key={id}
+                record={record}
+                update={update}
+                setUpdate={setUpdate}
+              />
             ))}
           </Records>
           <Balance color={balanceColor}>
