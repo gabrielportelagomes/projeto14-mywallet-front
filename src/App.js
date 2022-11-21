@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
-import GlobalStyle from "./assets/GlobalStyle";
+import GlobalStyle from "./assets/styles/GlobalStyle";
 import EditExpense from "./pages/EditExpense/EditExpense";
 import EditIncome from "./pages/EditIncome/EditIncome";
 import ExpensePage from "./pages/ExpensePage/ExpensePage";
