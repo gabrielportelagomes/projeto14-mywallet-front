@@ -57,6 +57,8 @@ function SignUpPage() {
           onChange={handleForm}
           type="text"
           placeholder="Nome"
+          minLength="3"
+          maxLength="50"
           disabled={disabledButton}
           required
         ></Input>
@@ -75,6 +77,7 @@ function SignUpPage() {
           onChange={handleForm}
           type="password"
           placeholder="Senha"
+          minLength="5"
           disabled={disabledButton}
           required
         ></Input>
@@ -84,6 +87,7 @@ function SignUpPage() {
           onChange={handleForm}
           type="password"
           placeholder="Confirme a senha"
+          minLength="5"
           disabled={disabledButton}
           errorPassword={errorPassword}
           required

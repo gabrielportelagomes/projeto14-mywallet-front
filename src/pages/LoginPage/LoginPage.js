@@ -65,6 +65,7 @@ function LoginPage() {
           onChange={handleForm}
           type="password"
           placeholder="Senha"
+          minLength="5"
           disabled={disabledButton}
           required
         ></Input>

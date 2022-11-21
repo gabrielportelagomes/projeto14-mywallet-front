@@ -84,6 +84,8 @@ function IncomePage() {
           onChange={handleForm}
           type="string"
           placeholder="Descrição"
+          minLength="1"
+          maxLength="30"
           disabled={disabledButton}
           required
         ></Input>

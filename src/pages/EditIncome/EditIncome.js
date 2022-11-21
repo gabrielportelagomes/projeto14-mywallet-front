@@ -86,6 +86,8 @@ function EditIncome() {
           onChange={handleForm}
           type="string"
           placeholder="Descrição"
+          minLength="1"
+          maxLength="30"
           required
         ></Input>
         <Button type="submit">Atualizar entrada</Button>
