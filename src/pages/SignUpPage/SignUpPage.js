@@ -8,6 +8,7 @@ import LoadingButton from "../../assets/styles/LoadingButton";
 function SignUpPage() {
   const navigate = useNavigate();
   const [disabledButton, setDisabledButton] = useState(false);
+  const [errorPassword, setErrorPassword] = useState(false);
   const [signUpForm, setSignUpForm] = useState({
     name: "",
     email: "",
@@ -17,6 +18,9 @@ function SignUpPage() {
 
   function handleForm(event) {
     const { name, value } = event.target;
+    if (name === "confirmPassword" && errorPassword === true) {
+      setErrorPassword(false);
+    }
     setSignUpForm({ ...signUpForm, [name]: value });
   }
 
@@ -38,7 +42,7 @@ function SignUpPage() {
           setDisabledButton(false);
         });
     } else {
-      alert("As senhas não conferem");
+      setErrorPassword(true);
       setDisabledButton(false);
     }
   }
@@ -74,15 +78,17 @@ function SignUpPage() {
           disabled={disabledButton}
           required
         ></Input>
-        <Input
+        <InputConfirm
           name="confirmPassword"
           value={signUpForm.confirmPassword}
           onChange={handleForm}
           type="password"
           placeholder="Confirme a senha"
           disabled={disabledButton}
+          errorPassword={errorPassword}
           required
-        ></Input>
+        ></InputConfirm>
+        {errorPassword && <Error>As senhas não conferem!</Error>}
         {disabledButton ? (
           <Button disabled={disabledButton}>
             <LoadingButton />
@@ -142,6 +148,19 @@ const Input = styled.input`
     -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
     -webkit-text-fill-color: #000000 !important;
   }
+`;
+
+const InputConfirm = styled(Input)`
+  border: ${(props) => (props.errorPassword ? "3px solid red" : "none")};
+`;
+
+const Error = styled.p`
+  font-family: "Raleway", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 13px;
 `;
 
 const Button = styled.button`
