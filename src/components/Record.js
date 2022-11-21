@@ -5,7 +5,7 @@ import URL from "../constants/url";
 import { useRecord } from "../provider/record";
 import { useNavigate } from "react-router-dom";
 
-function Record({ record, update, setUpdate }) {
+function Record({ record, update, setUpdate, setDeleteRecord }) {
   const navigate = useNavigate();
   const { userLogin } = useAuth();
   const { setEditRecord } = useRecord();
@@ -26,6 +26,7 @@ function Record({ record, update, setUpdate }) {
   }
 
   function deleteRecord(id) {
+    setDeleteRecord(true);
     const confirm = window.confirm("Dejesa excluir esse registro?");
     if (confirm) {
       axios
@@ -35,7 +36,12 @@ function Record({ record, update, setUpdate }) {
           },
         })
         .then(() => setUpdate(!update))
-        .catch((error) => console.log(error.response.data.message));
+        .catch((error) => {
+          console.log(error.response.data.message);
+          setDeleteRecord(false);
+        });
+    } else {
+      setDeleteRecord(false);
     }
   }
 

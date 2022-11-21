@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "../../provider/auth";
 import URL from "../../constants/url";
+import LoadingButton from "../../assets/styles/LoadingButton";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -63,9 +64,15 @@ function LoginPage() {
           disabled={disabledButton}
           required
         ></Input>
-        <Button type="submit" disabled={disabledButton}>
-          Entrar
-        </Button>
+        {disabledButton ? (
+          <Button disabled={disabledButton}>
+            <LoadingButton />
+          </Button>
+        ) : (
+          <Button type="submit" disabled={disabledButton}>
+            Entrar
+          </Button>
+        )}
       </LoginForm>
       {disabledButton ? (
         <SignUp>Primeira vez? Cadastre-se!</SignUp>
@@ -111,6 +118,7 @@ const Input = styled.input`
   font-weight: 400;
   font-size: 20px;
   color: #000000;
+  opacity: ${(props) => (props.disabled ? "0.7" : "1")};
   &:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
     -webkit-text-fill-color: #000000 !important;
@@ -120,6 +128,9 @@ const Input = styled.input`
 const Button = styled.button`
   width: 100%;
   height: 46px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 5px;
   border: none;
   background-color: #a328d6;

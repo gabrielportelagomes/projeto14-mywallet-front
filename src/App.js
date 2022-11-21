@@ -42,5 +42,6 @@ const ScreenContainer = styled.main`
   margin: 0 auto;
   display: flex;
   justify-content: center;
-  background-color: #8c11be; ;
+  background-color: #8c11be;
+  position: relative;
 `;

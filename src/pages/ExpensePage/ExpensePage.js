@@ -2,12 +2,14 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import LoadingButton from "../../assets/styles/LoadingButton";
 import URL from "../../constants/url";
 import { useAuth } from "../../provider/auth";
 
 function ExpensePage() {
   const navigate = useNavigate();
   const { userLogin } = useAuth();
+  const [disabledButton, setDisabledButton] = useState(false);
   const [expenseForm, setExpenseForm] = useState({
     value: "",
     description: "",
@@ -30,6 +32,7 @@ function ExpensePage() {
 
   function recordExpense(event) {
     event.preventDefault();
+    setDisabledButton(true);
     const body = {
       ...expenseForm,
       value: parseInt(expenseForm.value.replace(/[^\d]+/g, "")),
@@ -56,6 +59,7 @@ function ExpensePage() {
           onChange={(e) => handleForm(convertValue(e))}
           type="string"
           placeholder="Valor"
+          disabled={disabledButton}
           required
         ></Input>
         <Input
@@ -64,9 +68,18 @@ function ExpensePage() {
           onChange={handleForm}
           type="string"
           placeholder="Descrição"
+          disabled={disabledButton}
           required
         ></Input>
-        <Button type="submit">Salvar saída</Button>
+        {disabledButton ? (
+          <Button disabled={disabledButton}>
+            <LoadingButton />
+          </Button>
+        ) : (
+          <Button type="submit" disabled={disabledButton}>
+            Salvar saída
+          </Button>
+        )}
       </ExpenseForm>
     </PageContainer>
   );
@@ -108,6 +121,7 @@ const Input = styled.input`
   font-weight: 400;
   font-size: 20px;
   color: #000000;
+  opacity: ${(props) => (props.disabled ? "0.7" : "1")};
   &:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
     -webkit-text-fill-color: #000000 !important;
@@ -117,6 +131,9 @@ const Input = styled.input`
 const Button = styled.button`
   width: 100%;
   height: 46px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 5px;
   border: none;
   background-color: #a328d6;
@@ -124,5 +141,5 @@ const Button = styled.button`
   font-weight: 700;
   font-size: 20px;
   color: #ffffff;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? "cursor" : "pointer")};
 `;

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import URL from "../../constants/url";
+import LoadingButton from "../../assets/styles/LoadingButton";
 
 function SignUpPage() {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ function SignUpPage() {
         .then(() => navigate("/"))
         .catch((error) => {
           alert(error.response.data.message);
+          setDisabledButton(false);
         });
     } else {
       alert("As senhas não conferem");
@@ -81,9 +83,15 @@ function SignUpPage() {
           disabled={disabledButton}
           required
         ></Input>
-        <Button type="submit" disabled={disabledButton}>
-          Cadastrar
-        </Button>
+        {disabledButton ? (
+          <Button disabled={disabledButton}>
+            <LoadingButton />
+          </Button>
+        ) : (
+          <Button type="submit" disabled={disabledButton}>
+            Cadastrar
+          </Button>
+        )}
       </SignUpForm>
       {disabledButton ? (
         <Login>Já tem uma conta? Entre agora!</Login>
@@ -129,6 +137,7 @@ const Input = styled.input`
   font-weight: 400;
   font-size: 20px;
   color: #000000;
+  opacity: ${(props) => (props.disabled ? "0.7" : "1")};
   &:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
     -webkit-text-fill-color: #000000 !important;
@@ -138,6 +147,9 @@ const Input = styled.input`
 const Button = styled.button`
   width: 100%;
   height: 46px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 5px;
   border: none;
   background-color: #a328d6;
@@ -145,7 +157,7 @@ const Button = styled.button`
   font-weight: 700;
   font-size: 20px;
   color: #ffffff;
-  cursor:  ${(props) => (props.disabled ? "cursor" : "pointer")};;
+  cursor: ${(props) => (props.disabled ? "cursor" : "pointer")};
 `;
 
 const Login = styled.p`

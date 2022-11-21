@@ -7,6 +7,9 @@ import { useAuth } from "../../provider/auth";
 import URL from "../../constants/url";
 import { useEffect, useState } from "react";
 import Record from "../../components/Record";
+import LoadingPage from "../../assets/styles/LoadingPage";
+import LoadingSignOut from "../../assets/styles/LoadingSignOut";
+import LoadingDelete from "../../assets/styles/LoadingDelete";
 
 function WalletPage() {
   const navigate = useNavigate();
@@ -16,6 +19,8 @@ function WalletPage() {
   const [balance, setBalance] = useState("");
   const [balanceColor, setBalanceColor] = useState("#000000");
   const [update, setUpdate] = useState(false);
+  const [disabledButton, setDisabledButton] = useState(false);
+  const [deleteRecord, setDeleteRecord] = useState(false);
 
   useEffect(() => {
     if (userLogin !== undefined) {
@@ -43,6 +48,7 @@ function WalletPage() {
         .then((response) => {
           setRecords(response.data);
           calculateBalance(response.data);
+          setDeleteRecord(false);
         })
         .catch((error) => console.log(error.response.data.message));
     }
@@ -75,6 +81,8 @@ function WalletPage() {
   }
 
   function signOut() {
+    setDisabledButton(true);
+
     axios
       .delete(`${URL}/sign-out`, {
         headers: {
@@ -92,11 +100,20 @@ function WalletPage() {
   }
 
   if (userLogin === undefined || records === undefined || user === undefined) {
-    return <p>Carregando...</p>;
+    return (
+      <PageContainer>
+        <LoadingPage />
+      </PageContainer>
+    );
   }
 
   return (
     <PageContainer>
+      {disabledButton && (
+        <SignOutLoading>
+          <LoadingSignOut />
+        </SignOutLoading>
+      )}
       <Header>
         <p>Olá, {user.name.split(" ")[0]}</p>
         <SignOut onClick={signOut}>
@@ -116,6 +133,7 @@ function WalletPage() {
                 record={record}
                 update={update}
                 setUpdate={setUpdate}
+                setDeleteRecord={setDeleteRecord}
               />
             ))}
           </Records>
@@ -123,9 +141,13 @@ function WalletPage() {
             <p>SALDO</p>
             <span>{balance}</span>
           </Balance>
+          {deleteRecord && (
+            <DashboardLoading>
+              <LoadingDelete />
+            </DashboardLoading>
+          )}
         </Dashboard>
       )}
-
       <Options>
         <Link to="/income">
           <Button>
@@ -155,6 +177,20 @@ const PageContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+
+const SignOutLoading = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background-color: #ffffff;
+  opacity: 0.7;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  z-index: 1;
 `;
 
 const Header = styled.h1`
@@ -204,6 +240,21 @@ const Dashboard = styled.div`
   background-color: #ffffff;
   margin-top: 26px;
   position: relative;
+`;
+
+const DashboardLoading = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  border-radius: 5px;
+  background-color: #ffffff;
+  opacity: 0.8;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  z-index: 1;
 `;
 
 const Records = styled.div`
