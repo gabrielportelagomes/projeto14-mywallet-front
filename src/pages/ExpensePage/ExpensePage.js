@@ -50,11 +50,21 @@ function ExpensePage() {
         alert(error.response.data.message);
       });
   }
+
+  function backHome() {
+    const confirm = window.confirm(
+      "Os dados preenchidos serão perdidos, deseja continuar?"
+    );
+    if (confirm) {
+      navigate("/");
+    }
+  }
+
   return (
     <PageContainer>
       <Header>
         <h1>Nova saída</h1>
-        <Icon>
+        <Icon onClick={backHome}>
           <BiHome />
         </Icon>
       </Header>

@@ -55,11 +55,20 @@ function EditExpense() {
       });
   }
 
+  function backHome() {
+    const confirm = window.confirm(
+      "As alterações serão perdidas, deseja continuar?"
+    );
+    if (confirm) {
+      navigate("/");
+    }
+  }
+
   return (
     <PageContainer>
       <Header>
         <h1>Editar saída</h1>
-        <Icon>
+        <Icon onClick={backHome}>
           <BiHome />
         </Icon>
       </Header>

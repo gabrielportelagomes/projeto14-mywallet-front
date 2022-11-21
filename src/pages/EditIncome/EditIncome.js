@@ -11,7 +11,6 @@ function EditIncome() {
   const navigate = useNavigate();
   const { userLogin } = useAuth();
   const { editRecord } = useRecord();
-
   const [editIncomeForm, setEditIncomeForm] = useState({
     value: (editRecord.value / 100)
       .toFixed(2)
@@ -55,11 +54,20 @@ function EditIncome() {
       });
   }
 
+  function backHome() {
+    const confirm = window.confirm(
+      "As alterações serão perdidas, deseja continuar?"
+    );
+    if (confirm) {
+      navigate("/");
+    }
+  }
+
   return (
     <PageContainer>
       <Header>
         <h1>Editar entrada</h1>
-        <Icon>
+        <Icon onClick={backHome}>
           <BiHome />
         </Icon>
       </Header>

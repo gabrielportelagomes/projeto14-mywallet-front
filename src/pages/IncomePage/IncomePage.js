@@ -51,11 +51,20 @@ function IncomePage() {
       });
   }
 
+  function backHome() {
+    const confirm = window.confirm(
+      "Os dados preenchidos serão perdidos, deseja continuar?"
+    );
+    if (confirm) {
+      navigate("/");
+    }
+  }
+
   return (
     <PageContainer>
       <Header>
         <h1>Nova entrada</h1>
-        <Icon>
+        <Icon onClick={backHome}>
           <BiHome />
         </Icon>
       </Header>
