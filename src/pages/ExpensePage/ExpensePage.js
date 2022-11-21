@@ -48,6 +48,7 @@ function ExpensePage() {
       .then(() => navigate("/wallet"))
       .catch((error) => {
         alert(error.response.data.message);
+        setDisabledButton(false);
       });
   }
 

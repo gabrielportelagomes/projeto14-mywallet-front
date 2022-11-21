@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import LoadingButton from "../../assets/styles/LoadingButton";
 import URL from "../../constants/url";
 import { useAuth } from "../../provider/auth";
 import { useRecord } from "../../provider/record";
@@ -11,6 +12,7 @@ function EditIncome() {
   const navigate = useNavigate();
   const { userLogin } = useAuth();
   const { editRecord } = useRecord();
+  const [disabledButton, setDisabledButton] = useState(false);
   const [editIncomeForm, setEditIncomeForm] = useState({
     value: (editRecord.value / 100)
       .toFixed(2)
@@ -37,6 +39,7 @@ function EditIncome() {
 
   function updateIncome(event) {
     event.preventDefault();
+    setDisabledButton(true);
     const body = {
       ...editIncomeForm,
       value: parseInt(editIncomeForm.value.replace(/[^\d]+/g, "")),
@@ -51,6 +54,7 @@ function EditIncome() {
       .then(() => navigate("/wallet"))
       .catch((error) => {
         alert(error.response.data.message);
+        setDisabledButton(false);
       });
   }
 
@@ -78,6 +82,7 @@ function EditIncome() {
           onChange={(e) => handleForm(convertValue(e))}
           type="string"
           placeholder="Valor"
+          disabled={disabledButton}
           required
         ></Input>
         <Input
@@ -88,9 +93,18 @@ function EditIncome() {
           placeholder="Descrição"
           minLength="1"
           maxLength="30"
+          disabled={disabledButton}
           required
         ></Input>
-        <Button type="submit">Atualizar entrada</Button>
+        {disabledButton ? (
+          <Button disabled={disabledButton}>
+            <LoadingButton />
+          </Button>
+        ) : (
+          <Button type="submit" disabled={disabledButton}>
+            Atualizar entrada
+          </Button>
+        )}
       </IncomeForm>
     </PageContainer>
   );
@@ -140,6 +154,7 @@ const Input = styled.input`
   font-weight: 400;
   font-size: 20px;
   color: #000000;
+  opacity: ${(props) => (props.disabled ? "0.7" : "1")};
   &:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
     -webkit-text-fill-color: #000000 !important;
@@ -149,6 +164,9 @@ const Input = styled.input`
 const Button = styled.button`
   width: 100%;
   height: 46px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 5px;
   border: none;
   background-color: #a328d6;
@@ -156,5 +174,5 @@ const Button = styled.button`
   font-weight: 700;
   font-size: 20px;
   color: #ffffff;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? "cursor" : "pointer")};
 `;
