@@ -114,12 +114,12 @@ function WalletPage() {
           <LoadingSignOut />
         </SignOutLoading>
       )}
-      <Header>
-        <p>Olá, {user.name.split(" ")[0]}</p>
+      <Navbar>
+        <Header>Olá, {user.name.split(" ")[0]}</Header>
         <SignOut onClick={signOut}>
           <RiLogoutBoxRLine />
         </SignOut>
-      </Header>
+      </Navbar>
       {records.length === 0 ? (
         <EmptyDashboard>
           <p>Não há registros de entrada ou saída</p>
@@ -193,16 +193,22 @@ const SignOutLoading = styled.div`
   z-index: 1;
 `;
 
-const Header = styled.h1`
+const Navbar = styled.div`
   width: 326px;
+  height: 26px;
   display: flex;
   justify-content: space-between;
-  p {
-    font-family: "Raleway", sans-serif;
-    font-weight: 700;
-    font-size: 26px;
-    color: #ffffff;
-  }
+`;
+
+const Header = styled.h1`
+  width: 300px;
+  height: 26px;
+  font-family: "Raleway", sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+  color: #ffffff;
+  word-wrap: break-word;
+  hyphens: auto;
 `;
 
 const SignOut = styled.span`
