@@ -89,7 +89,7 @@ const Date = styled.p`
 
 const Description = styled.p`
   margin-left: 5px;
-  width: 160px;
+  width: 130px;
   text-align: left;
   color: #000000;
   cursor: pointer;
@@ -97,6 +97,8 @@ const Description = styled.p`
 
 const Value = styled.p`
   margin-left: 5px;
+  width: 90px;
+  text-align: end;
   color: ${(props) => props.color};
 `;
 
