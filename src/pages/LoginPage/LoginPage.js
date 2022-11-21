@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { useAuth } from "../../provider/auth";
 import URL from "../../constants/url";
 import LoadingButton from "../../assets/styles/LoadingButton";
+import { GiWallet } from "react-icons/gi";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -44,6 +45,9 @@ function LoginPage() {
 
   return (
     <PageContainer>
+      <Icon>
+        <GiWallet />
+      </Icon>
       <Logo>MyWallet</Logo>
       <LoginForm onSubmit={login}>
         <Input
@@ -92,6 +96,11 @@ const PageContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+
+const Icon = styled.p`
+  font-size: 50px;
+  color: #ffffff;
 `;
 
 const Logo = styled.h1`

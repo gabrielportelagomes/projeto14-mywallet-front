@@ -5,6 +5,7 @@ import styled from "styled-components";
 import URL from "../../constants/url";
 import { useAuth } from "../../provider/auth";
 import { useRecord } from "../../provider/record";
+import { BiHome } from "react-icons/bi";
 
 function EditIncome() {
   const navigate = useNavigate();
@@ -56,7 +57,12 @@ function EditIncome() {
 
   return (
     <PageContainer>
-      <Header>Editar entrada</Header>
+      <Header>
+        <h1>Editar entrada</h1>
+        <Icon>
+          <BiHome />
+        </Icon>
+      </Header>
       <IncomeForm onSubmit={updateIncome}>
         <Input
           name="value"
@@ -88,15 +94,23 @@ const PageContainer = styled.div`
   align-items: center;
 `;
 
-const Header = styled.h1`
+const Header = styled.div`
   width: 326px;
   display: flex;
   justify-content: space-between;
-  font-family: "Raleway", sans-serif;
-  font-weight: 700;
+  margin-top: 25px;
+  h1 {
+    font-family: "Raleway", sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    color: #ffffff;
+  }
+`;
+
+const Icon = styled.p`
   font-size: 26px;
   color: #ffffff;
-  margin-top: 25px;
+  cursor: pointer;
 `;
 
 const IncomeForm = styled.form`

@@ -5,6 +5,7 @@ import styled from "styled-components";
 import LoadingButton from "../../assets/styles/LoadingButton";
 import URL from "../../constants/url";
 import { useAuth } from "../../provider/auth";
+import { BiHome } from "react-icons/bi";
 
 function IncomePage() {
   const navigate = useNavigate();
@@ -52,7 +53,12 @@ function IncomePage() {
 
   return (
     <PageContainer>
-      <Header>Nova entrada</Header>
+      <Header>
+        <h1>Nova entrada</h1>
+        <Icon>
+          <BiHome />
+        </Icon>
+      </Header>
       <IncomeForm onSubmit={recordIncome}>
         <Input
           name="value"
@@ -94,15 +100,23 @@ const PageContainer = styled.div`
   align-items: center;
 `;
 
-const Header = styled.h1`
+const Header = styled.div`
   width: 326px;
   display: flex;
   justify-content: space-between;
-  font-family: "Raleway", sans-serif;
-  font-weight: 700;
+  margin-top: 25px;
+  h1 {
+    font-family: "Raleway", sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    color: #ffffff;
+  }
+`;
+
+const Icon = styled.p`
   font-size: 26px;
   color: #ffffff;
-  margin-top: 25px;
+  cursor: pointer;
 `;
 
 const IncomeForm = styled.form`
